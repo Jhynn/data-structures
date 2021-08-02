@@ -1,0 +1,13 @@
+Defina uma struct que:
+- Represente a velocidade máxima permitida na passagem de um semáforo de uma 
+avenida;
+- Leia a placa dos automóveis e a velocidade com que cada motorista passa 
+pelo semáforo;
+- Calcule a multa que este motorista deverá receber, sabendo que são pagos 
+R$ 5,00 por cada quilômetro que o motorista ultrapassar acima da velocidade 
+permitida, até um limite de R$ 190,00.
+- Deve-se armazenar a placa do carro, a velocidade alta de passagem pelo 
+semáforo, a data da ocorrência e o valo
+
+Para manipular os dados, armazene-os numa lista linear simplesmente ligada. 
+Implemente todas as operações necessárias para manipulação de listas ligadas.
