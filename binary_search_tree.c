@@ -3,6 +3,7 @@
 
 struct element {
     int code;
+    char letter;
     float value;
     struct element* left;
     struct element* right;
@@ -17,12 +18,13 @@ struct tree {
 typedef struct tree tree;
 
 element*
-new_element(int code, float value) {
+new_element(const int code, const char letter, const float value) {
     element* tmp = malloc(sizeof(element));
-    tmp->code  = code;
-    tmp->left  = NULL;
-    tmp->right = NULL;
-    tmp->value = value;
+    tmp->code   = code;
+    tmp->left   = NULL;
+    tmp->right  = NULL;
+    tmp->value  = value;
+    tmp->letter = letter;
 
     return tmp;
 }
@@ -30,8 +32,8 @@ new_element(int code, float value) {
 void
 print_element(element* user_element) {
     if (user_element != NULL) {
-        printf("Code: %d, value: %g\n", 
-            user_element->code, user_element->value);
+        printf("Code: %d, letter: %c, value: %g\n", 
+            user_element->code, user_element->letter, user_element->value);
     } else {
         printf("This element don't exist!\n");
     }
@@ -78,13 +80,60 @@ insert(tree* tree, element* member) {
     }
 }
 
+// int c = 0;
+
 void
-show(element* node) {
+pre_order(element* node) {
+    // printf("%d\n", c++);
+
     if (node != NULL) {
         print_element(node);
-        show(node->left);
-        show(node->right);
+        pre_order(node->left);
+        pre_order(node->right);
     }
+}
+
+void
+in_order(element* node) {
+    // printf("%d\n", c++);
+
+    if (node->left != NULL)
+        in_order(node->left);
+
+    print_element(node);
+
+    if (node->right != NULL)
+        in_order(node->right);
+}
+
+void
+post_order(element* node) {
+    // printf("%d\n", c++);
+
+    if (node->left != NULL)
+        post_order(node->left);
+    if (node->right != NULL)
+        post_order(node->right);
+        print_element(node);
+}
+
+void
+show(tree* tree, unsigned int style) {
+    if (tree->root == NULL) {
+        printf("This tree is empty!\n");
+        return;
+    } else if (style == 1) {
+        printf("\tOrderly style \n\n");
+        in_order(tree->root);
+    } else if (style == 2) {
+        printf("\tPre order style\n\n");
+        pre_order(tree->root);
+    } else if (style == 3) {
+        printf("\tPost order style\n\n");
+        post_order(tree->root);
+    }
+    else
+        printf("Invalid choice!\n");
 }
 
 element*
@@ -259,8 +308,9 @@ delete(tree* tree, float value) {
 }
 
 int
-main(void) {
+main(int argc, char* agcv[]) {
     int choice, code = 0;
+    char letter;
     float number;
 
     tree bst;
@@ -279,12 +329,17 @@ main(void) {
             case 1:
                 printf("\nPlease, enter a number: ");
                 scanf("%f", &number);
-                insert(&bst, new_element(code++, number));
+                printf("\nand an letter: ");
+                scanf(" %c", &letter);
+                insert(&bst, new_element(code++, letter, number));
                 printf("\n");
                 break;
             case 2:
-                printf("\nSize: %d\n", size(bst.root));
-                show(bst.root);
+                printf("Please, choose a style of presentation.\n");
+                printf("(1) In order ─ (2) Pre order ─ (3) ─ Post order: ");
+                scanf("%f", &number);
+                printf("\n\nSize: %d \t─", size(bst.root));
+                show(&bst, (int) number);
                 printf("\n");
                 break;
             case 3:
