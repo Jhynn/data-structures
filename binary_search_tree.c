@@ -51,6 +51,34 @@ size(element* root) {
 	return size(root->left) + 1 + size(root->right);
 }
 
+int
+left_sub_tree_size(element* root) {
+    if (root == NULL || (root->left == NULL && root->right == NULL))
+        return 0;
+
+    return left_sub_tree_size(root->left) + 1 + left_sub_tree_size(root->left->right);
+}
+
+int
+right_sub_tree_size(element* root) {
+    if (root == NULL || (root->left == NULL && root->right == NULL))
+        return 0;
+
+    return right_sub_tree_size(root->right) + 1 + right_sub_tree_size(root->right->left);
+}
+
+int     // This function disregards the leaves.
+sub_tree_size(element* root, int left) {
+    int size;
+
+    if (left)
+        size = left_sub_tree_size(root);
+    else
+        size = right_sub_tree_size(root);
+
+    return size - 1;    
+}
+
 void
 insert(tree* tree, element* member) {
     if (tree->root == NULL)
@@ -80,8 +108,6 @@ insert(tree* tree, element* member) {
     }
 }
 
-// int c = 0;
-
 void
 pre_order(element* node) {
     // printf("%d\n", c++);
@@ -95,8 +121,6 @@ pre_order(element* node) {
 
 void
 in_order(element* node) {
-    // printf("%d\n", c++);
-
     if (node->left != NULL)
         in_order(node->left);
 
@@ -354,9 +378,16 @@ main(int argc, char* agcv[]) {
                 delete(&bst, number);
                 printf("\n");
                 break;
+            case 5:
+                printf("\nFrom which value? ");
+                scanf("%f", &number);
+                printf("\nRight sub tree (0) or left sub tree (1): ");
+                scanf("%d", &choice);
+                printf("\n\nThe size is %d.\n", sub_tree_size(search(&bst.root, number), choice));
+                break;
             default:
                 printf("Invalid choice, please try again.\n\n");
         }
     } while (choice != 0);
-    printf("Thank you!\n");
+    printf("\nThank you!\n");
 }
