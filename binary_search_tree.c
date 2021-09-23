@@ -56,7 +56,11 @@ left_sub_tree_size(element* root) {
     if (root == NULL || (root->left == NULL && root->right == NULL))
         return 0;
 
-    return left_sub_tree_size(root->left) + 1 + left_sub_tree_size(root->left->right);
+    else if (root->left != NULL)
+        return left_sub_tree_size(root->left) + 1 + \
+                left_sub_tree_size(root->left->right);
+
+    return left_sub_tree_size(root->left) + 1;
 }
 
 int
@@ -64,7 +68,11 @@ right_sub_tree_size(element* root) {
     if (root == NULL || (root->left == NULL && root->right == NULL))
         return 0;
 
-    return right_sub_tree_size(root->right) + 1 + right_sub_tree_size(root->right->left);
+    else if (root->right != NULL)
+        return right_sub_tree_size(root->right->left) + 1 + \
+                right_sub_tree_size(root->right);
+
+    return right_sub_tree_size(root->right) + 1;
 }
 
 int     // This function disregards the leaves.
@@ -343,9 +351,12 @@ main(int argc, char* agcv[]) {
     do {
         printf("\t\tBinary Search Tree\n\t1. Insert"
                 "\t2. Display\t3. Search\n"
-                "\t4. Remove\t0. Exit\n");
+                "\t4. Remove\t5. Subtree size (disregarding the leaves)\n"
+                "\t0. Exit\n"
+        );
         printf("\nEnter Choice 0─4: ");
         scanf("%d", &choice);
+        printf("\n");
 
         switch (choice) {
             case 0:
@@ -356,7 +367,7 @@ main(int argc, char* agcv[]) {
                 printf("\nand an letter: ");
                 scanf(" %c", &letter);
                 insert(&bst, new_element(code++, letter, number));
-                printf("\n");
+                printf("\n\n");
                 break;
             case 2:
                 printf("Please, choose a style of presentation.\n");
@@ -364,26 +375,26 @@ main(int argc, char* agcv[]) {
                 scanf("%f", &number);
                 printf("\n\nSize: %d \t─", size(bst.root));
                 show(&bst, (int) number);
-                printf("\n");
+                printf("\n\n");
                 break;
             case 3:
                 printf("Please, type a number to be searched: ");
                 scanf("%f", &number);
                 print_element(search(&bst, number));
-                printf("\n");
+                printf("\n\n");
                 break;
             case 4:
                 printf("Please, enter the value: ");
                 scanf("%f", &number);
                 delete(&bst, number);
-                printf("\n");
+                printf("\n\n");
                 break;
             case 5:
                 printf("\nFrom which value? ");
                 scanf("%f", &number);
                 printf("\nRight sub tree (0) or left sub tree (1): ");
                 scanf("%d", &choice);
-                printf("\n\nThe size is %d.\n", sub_tree_size(search(&bst.root, number), choice));
+                printf("\n\nThe size is %d.\n\n", sub_tree_size(search(&bst.root, number), choice));
                 break;
             default:
                 printf("Invalid choice, please try again.\n\n");
