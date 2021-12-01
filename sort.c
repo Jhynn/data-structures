@@ -81,6 +81,7 @@ merge(data* array, int(*comparator)(data, data), int p, int q, int r) {
   int m = q - p + 1;
   int n = r - q;
 
+  // Copy the elements on temporary arrays: left and right.
   int left[m], right[n];
 
   for (i = 0; i < m; i++)
@@ -89,8 +90,8 @@ merge(data* array, int(*comparator)(data, data), int p, int q, int r) {
   for (j = 0; j < n; j++)
     right[j] = array[q + 1 + j];
 
-  i = j = 0;
-  k = p;
+  i = j = 0;  // Initial index of the, both, sub-arrays.
+  k = p;      // Initial index of the ordered array (l...r).
 
   while (k < r) {
     if (comparator(right[j], left[i])) {
@@ -102,12 +103,28 @@ merge(data* array, int(*comparator)(data, data), int p, int q, int r) {
     }
     k++;
   }
+
+    // Copy the remaining elements of left[], if there are any.
+    while (i < m) {
+        array[k] = left[i];
+        i++;
+        k++;
+    }
+
+    // Same for right.
+    while (j < n) {
+        array[k] = right[j];
+        j++;
+        k++;
+    }
 }
 
 void
 mergeSort(data* array, int(*comparator)(data, data), int p, int r) {
   if (p < r) {
-    int q = (p + r) / 2; 
+    int q = (p + r) / 2;
+
+    // Dividing in two parts.
     mergeSort(array, comparator, p, q);
     mergeSort(array, comparator, q+1, r);
 
